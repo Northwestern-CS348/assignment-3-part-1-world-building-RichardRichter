@@ -3,17 +3,45 @@ For a game with 8 tiles of blocks on a 3x3 grid,
 write down the Facts and Rules to model the game state 
 shown as the follows:
 
- y\\x   pos1     pos2     pos3
-     ┌────────┬────────┬────────┐
-pos1 │ tile1  │ tile2  │ tile3  │
-     ├────────┼────────┼────────┤
-pos2 │ tile8  │ empty  │ tile4  │
-     ├────────┼────────┼────────┤
-pos3 │ tile7  │ tile6  │ tile5  │
-     └────────┴────────┴────────┘
+
+
 
 Example: 
 fact: (pred obj1 obj2)
 rule: ((pred obj1 obj2) (pred obj2 obj3)) -> (pred obj1 obj3)
 
 """
+
+fact: (isA tile1 tile)
+fact: (isA tile2 tile)
+fact: (isA tile3 tile)
+fact: (isA tile4 tile)
+fact: (isA tile5 tile)
+fact: (isA tile6 tile)
+fact: (isA tile7 tile)
+fact: (isA tile8 tile)
+fact: (isA emptytile empty)
+
+fact: (isValue pos1 1)
+fact: (isValue pos2 2)
+fact: (isValue pos3 3)
+
+fact: (currLoc tile1 pos1 pos1)
+fact: (currLoc tile2 pos2 pos1)
+fact: (currLoc tile3 pos3 pos1)
+fact: (currLoc tile4 pos3 pos2)
+fact: (currLoc tile5 pos3 pos3)
+fact: (currLoc tile6 pos2 pos3)
+fact: (currLoc tile7 pos1 pos3)
+fact: (currLoc tile8 pos1 pos2)
+fact: (currLoc emptytile pos2 pos2)
+fact: (movable tile2 pos2 pos1 pos2 pos2)
+fact: (movable tile4 pos3 pos2 pos2 pos2)
+fact: (movable tile6 pos2 pos3 pos2 pos2)
+fact: (movable tile8 pos1 pos2 pos2 pos2)
+
+
+rule: ((currLoc q? x? y?) (currLoc w? xx? yy?) (isEqual x? xx?)  (isValue x? 2)) -> (areAdjacent  q? w?)
+rule: ((currLoc q? x? y?) (currLoc w? xx? yy?) (isEqual y? yy?) (isValue y? 2)) -> (areAdjacent  q? w?)
+rule: ((isEmpty q?) (currLoc q? x? y?) (currLoc w? xx? yy?) (areAdjacent q? w?)) -> (movable w? xx? yy? x? y?)
+
